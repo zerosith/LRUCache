@@ -13,7 +13,7 @@ This repository contains an implementation od LRU cache
 ## Run the code
 Go to root folder LRUCache and run:
 ```sh
-mvn clean install
+mvn clean install 
 ```
 After that the jar `LRUCache-0.1.jar` is generated in the **LRUCache\target** folder
 Go to the folder **LRUCache\target** and run:
@@ -21,3 +21,16 @@ Go to the folder **LRUCache\target** and run:
 java -jar LRUCache-0.1.jar
 ```
 This will run the tests included in this library
+
+
+## Jacoco Report
+Go to root folder LRUCache and run:
+```sh
+mvn clean install test site
+```
+
+Go to the folder **LRUCache\target\site\jacoco** and open the file:
+```sh
+index.html
+```
+To check the generated coverage report
