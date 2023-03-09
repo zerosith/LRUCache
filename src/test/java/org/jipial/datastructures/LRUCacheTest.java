@@ -1,7 +1,10 @@
 package org.jipial.datastructures;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -70,5 +73,25 @@ public class LRUCacheTest {
     public void testTestToString() {
         String expected = "LRUCache{capacity=2, values={1=LRUCacheNode{value=1, key=1}, 3=LRUCacheNode{value=3, key=3}, 5=LRUCacheNode{value=6, key=5}}, valuesL=[LRUCacheNode{value=1, key=1}, LRUCacheNode{value=6, key=5}, LRUCacheNode{value=3, key=3}]}";
         assertThat(cache.toString()).isEqualTo(expected);
+    }
+
+    @Test
+    public void testEqualsSymmetric() throws IllegalAccessException {
+        List lst = (List) FieldUtils.readField(cache,"valuesL", true );
+        assertThat(lst.get(0).hashCode()).isEqualTo(lst.get(0).hashCode());
+
+        assertThat(lst.get(0)).isEqualTo(lst.get(0));
+        assertThat(lst.get(0)).isNotEqualTo(lst.get(1));
+
+    }
+
+    @Test
+    public void testGetElementWithEmptyCache(){
+        cache.remove(1);
+        cache.remove(5);
+        cache.remove(3);
+        assertThat(cache.get(1)).isEqualTo(Optional.empty());
+        assertThat(cache.get(5)).isEqualTo(Optional.empty());
+        assertThat(cache.get(3)).isEqualTo(Optional.empty());
     }
 }
