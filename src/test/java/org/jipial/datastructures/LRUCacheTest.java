@@ -56,6 +56,17 @@ public class LRUCacheTest {
     }
 
     @Test
+    public void testEvictionPolicy(){
+
+        cache.put(7,7);
+        assertThat(cache.getCapacity()).isEqualTo(1);
+        cache.put(11,34);
+        assertThat(cache.getCapacity()).isEqualTo(0);
+        int expectedValueToEvict = 1;
+        assertThat(cache.put(14,54)).isEqualTo(Optional.of(expectedValueToEvict));
+    }
+
+    @Test
     public void testTestToString() {
         String expected = "LRUCache{capacity=2, values={1=LRUCacheNode{value=1, key=1}, 3=LRUCacheNode{value=3, key=3}, 5=LRUCacheNode{value=6, key=5}}, valuesL=[LRUCacheNode{value=1, key=1}, LRUCacheNode{value=6, key=5}, LRUCacheNode{value=3, key=3}]}";
         assertThat(cache.toString()).isEqualTo(expected);

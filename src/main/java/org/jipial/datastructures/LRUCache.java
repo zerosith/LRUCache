@@ -14,10 +14,6 @@ public class LRUCache<K,V> {
             this.key = key;
         }
 
-        public K getKey() {
-            return key;
-        }
-
         public V getValue() {
             return value;
         }
@@ -57,21 +53,32 @@ public class LRUCache<K,V> {
 
     }
 
-    public void put(K key, V value){
+
+    /**
+     *
+     * @param key
+     * @param value
+     * @return optional with evicted variable or empty optional if eviction policy has not happened.
+     */
+    public Optional<V> put(K key, V value){
+
+        Optional<V> evicted = Optional.empty();
         if(!capacity.equals(0)){
             LRUCacheNode <K,V>aux =new LRUCacheNode<>(key, value);
             values.put(key,aux);
             valuesL.add(aux);
             capacity --;
 
+
         }else{
             //Implement eviction policy
             LRUCacheNode<K, V> node = valuesL.remove(0);
-            values.remove(node.key);
+            evicted = Optional.of( values.remove( node.key ).getValue());
             LRUCacheNode<K, V> nNode = new LRUCacheNode<>(key,value);
             valuesL.add(nNode);
             values.put(key,nNode);
         }
+        return evicted;
     }
 
     public Optional<V> get(K key){
